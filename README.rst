@@ -1,34 +1,32 @@
-===============================
-Realtime Stock
-===============================
+.. highlight:: shell
+
+.. include:: ./intro.rst
 
 
-.. image:: https://img.shields.io/pypi/v/realtime-stock.svg
-        :target: https://pypi.python.org/pypi/realtime-stock
+Installation
+------------
+To install Realtime Stock, run this command in your terminal:
 
-.. image:: https://img.shields.io/travis/condereis/realtime-stock.svg
-        :target: https://travis-ci.org/condereis/realtime-stock
+.. code-block:: console
 
-.. image:: https://readthedocs.org/projects/realtime-stock/badge/?version=latest
-        :target: https://realtime-stock.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+    $ pip install realtime-stock
 
-.. image:: https://pyup.io/repos/github/condereis/realtime-stock/shield.svg
-     :target: https://pyup.io/repos/github/condereis/realtime-stock/
-     :alt: Updates
+Check `here <http://goo.gl/8AROUD>`_  for further information on installation.
 
 
-A python package to gather realtime stock quotes from Yahoo Finance. The package enables you to handle single stocks or portfolios, optimizing the nunber of requests necessary to gather quotes for a large number of stocks.
+Basic Usage
+-----------
 
+For single stocks:
 
-* Free software: MIT license
-* Documentation: https://realtime-stock.readthedocs.io.
+>>> from rtstock.stock import Stock
+>>> stock = Stock('AAPL')
+>>> stock.get_latest_price()
+{
+    'LastTradePriceOnly': '95.89',
+    'LastTradeTime': '4:00pm'
+}
 
-
-Features
---------
-
-* TODO
 
 Credits
 ---------
