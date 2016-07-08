@@ -1,5 +1,3 @@
-.. highlight:: shell
-
 .. include:: ./docs/intro.rst
 
 
