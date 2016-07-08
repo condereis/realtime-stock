@@ -36,7 +36,7 @@ def request_quotes(tickers_list, selected_columns=['*']):
     """Request Yahoo Finance recent quotes.
 
     Returns quotes information from YQL. The columns to be requested are
-    listed at selected_columns. `Check <http://goo.gl/8AROUD>`_ for more
+    listed at selected_columns. Check `here <http://goo.gl/8AROUD>`_ for more
     information on YQL.
 
     >>> request_quotes(['AAPL'], ['Name', 'PreviousClose'])
