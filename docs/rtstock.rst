@@ -4,10 +4,10 @@ rtstock package
 Submodules
 ----------
 
-rtstock.rtstock module
-----------------------
+rtstock.stock module
+--------------------
 
-.. automodule:: rtstock.rtstock
+.. automodule:: rtstock.stock
     :members:
     :undoc-members:
     :show-inheritance:
