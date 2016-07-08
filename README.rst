@@ -40,7 +40,7 @@ To install Realtime Stock, run this command in your terminal:
 
     $ pip install realtime-stock
 
-Check `here <http://goo.gl/8AROUD>`_  for further information on installation.
+Check `here https://realtime-stock.readthedocs.io/en/latest/installation.html`_  for further information on installation.
 
 
 Basic Usage
