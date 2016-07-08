@@ -12,6 +12,14 @@ rtstock.stock module
     :undoc-members:
     :show-inheritance:
 
+rtstock.utils module
+--------------------
+
+.. automodule:: rtstock.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

@@ -1,5 +1,5 @@
 """
-Realtime Stock: Stock module.
+Stock module.
 
 This module contains all the classes used to retrieve information
 about a single stock from Yahoo Finances. That includes, realtime
