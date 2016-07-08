@@ -1,6 +1,6 @@
 .. highlight:: shell
 
-.. include:: ./intro.rst
+.. include:: ./docs/intro.rst
 
 
 Installation
