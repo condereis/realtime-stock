@@ -8,15 +8,14 @@ test_rtstock
 Tests for `rtstock` module.
 """
 
-
+from __future__ import unicode_literals
 import sys
 import unittest
 
-from rtstock import rtstock
+# from rtstock import stock
 
 
-
-class TestRtstock(unittest.TestCase):
+class TestStock(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -26,7 +25,6 @@ class TestRtstock(unittest.TestCase):
 
     def test_000_something(self):
         pass
-
 
 
 if __name__ == '__main__':
