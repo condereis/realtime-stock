@@ -7,6 +7,8 @@ quotes information as well as historical data.
 """
 
 from __future__ import unicode_literals
+from .utils import request_quotes, request_historical
+
 
 class Stock(object):
     """Class for handling stock.
@@ -55,7 +57,7 @@ class Stock(object):
         :returns: Ticker.
         :rtype: string
         """
-        return True
+        return self.__ticker
 
     def get_latest_price(self):
         """Get stock's latest price.
@@ -72,7 +74,8 @@ class Stock(object):
         :returns: Dictionary with latest price and trade time.
         :rtype: dictionary
         """
-        return True
+        return request_quotes([self.__ticker],
+                              ['LastTradePriceOnly', 'LastTradeTime'])
 
     def get_info(self):
         """Get all stock's information provided by Yahoo Finance.
@@ -85,7 +88,7 @@ class Stock(object):
         :returns: Dictionary with all the available information.
         :rtype: dictionary
         """
-        return True
+        return request_quotes([self.__ticker])
 
     def get_historical(self, start_date=None, end_date=None):
         """Get stock's daily historical information.
@@ -96,10 +99,25 @@ class Stock(object):
         retrieved.
 
         :param start_date: Start date, defaults to None
-        :type start_date: datetime.date, optional
-        :param end_date: End date, defaults to None
-        :type end_date: datetime.date, optional
-        :returns: DataFrame with daily historical information.
-        :rtype: pandas.DataFrame
+	    :type start_date: string on the format of "yyyy-mm-dd"
+	    :param end_date: End date, defaults to None
+	    :type end_date: string on the format of "yyyy-mm-dd"
+	    :returns: DataFrame with daily historical information.
+	    :rtype: pandas.DataFrame
         """
-        return True
+        if not start_date:
+            start_date = self.__start_date
+        if not end_date:
+            end_date = self.__end_date
+
+        cols = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Adj_Close']
+        query = 'select {cols} from yahoo.finance.historicaldata ' + \
+            'where symbol in ("{ticker}") and startDate = "{start_date}" ' + \
+            'and endDate = "{end_date}"'
+        query = query.format(
+            cols=', '.join(cols),
+            ticker=self.__ticker,
+            start_date=start_date,
+            end_date=end_date
+        )
+        return request_historical(self.__ticker, start_date, end_date)

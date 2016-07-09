@@ -22,7 +22,6 @@ Realtime Stock is a Python package to gather realtime stock quotes from Yahoo Fi
 
 
 * Documentation: https://realtime-stock.readthedocs.io.
-* Repository: https://github.com/condereis/realtime-stock
 * Free software: MIT license
 
 

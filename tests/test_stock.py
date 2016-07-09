@@ -2,29 +2,29 @@
 # -*- coding: utf-8 -*-
 
 """
-test_rtstock
+test_stock
 ----------------------------------
 
 Tests for `rtstock` module.
 """
 
-from __future__ import unicode_literals
+
 import sys
 import unittest
 
-# from rtstock import stock
+from rtstock.stock import Stock
+
 
 
 class TestStock(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.ticker = 'AAPL'
+        self.stock = Stock(self.ticker)
 
-    def tearDown(self):
-        pass
+    def test_get_ticker(self):
+        self.assertEqual(self.stock.get_ticker(), self.ticker)
 
-    def test_000_something(self):
-        pass
 
 
 if __name__ == '__main__':

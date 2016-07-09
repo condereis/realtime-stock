@@ -65,6 +65,7 @@ def request_quotes(tickers_list, selected_columns=['*']):
         cols=', '.join(selected_columns),
         vals=', '.join('"{0}"'.format(s) for s in tickers_list)
     )
+
     return __yahoo_request(query)['quote']
 
 
@@ -88,9 +89,9 @@ def request_historical(ticker, start_date, end_date):
     2016-03-02  33169600
     2016-03-01  50407100
 
-    :param start_date: Start date, defaults to None
+    :param start_date: Start date
     :type start_date: string on the format of "yyyy-mm-dd"
-    :param end_date: End date, defaults to None
+    :param end_date: End date
     :type end_date: string on the format of "yyyy-mm-dd"
     :returns: DataFrame with daily historical information.
     :rtype: pandas.DataFrame
@@ -105,7 +106,9 @@ def request_historical(ticker, start_date, end_date):
         start_date=start_date,
         end_date=end_date
     )
-    out_df = pd.DataFrame(__yahoo_request(query)['quote'])
+    response = __yahoo_request(query)['quote']
+    out_df = pd.DataFrame(response)
     out_df.set_index('Date', inplace=True)
     out_df.index.name = None
+
     return out_df
