@@ -7,7 +7,7 @@ coverage==4.1
 cryptography==1.4
 docutils==0.12
 enum34==1.1.6
-flake8==2.6.0
+flake8==2.6.2
 idna==2.1
 imagesize==0.7.1
 ipaddress==1.0.16
