@@ -26,6 +26,5 @@ class TestStock(unittest.TestCase):
         self.assertEqual(self.stock.get_ticker(), self.ticker)
 
 
-
 if __name__ == '__main__':
     sys.exit(unittest.main())
