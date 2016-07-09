@@ -35,7 +35,7 @@ Installation
 ------------
 To install Realtime Stock, run this command in your terminal:
 
-.. code-block:: console
+.. code:: console
 
     $ pip install realtime-stock
 
@@ -47,13 +47,14 @@ Basic Usage
 
 For single stocks:
 
->>> from rtstock.stock import Stock
->>> stock = Stock('AAPL')
->>> stock.get_latest_price()
-{
-    'LastTradePriceOnly': '95.89',
-    'LastTradeTime': '4:00pm'
-}
+.. code:: python
+	>>> from rtstock.stock import Stock
+	>>> stock = Stock('AAPL')
+	>>> stock.get_latest_price()
+	{
+	    'LastTradePriceOnly': '95.89',
+	    'LastTradeTime': '4:00pm'
+	}
 
 
 Credits
