@@ -8,7 +8,6 @@ from Yahoo Finance.
 from __future__ import unicode_literals
 import datetime
 import json
-import pandas as pd
 import os
 
 try:
@@ -98,7 +97,7 @@ def request_quotes(tickers_list, selected_columns=['*']):
 def request_historical(ticker, start_date, end_date):
     """Get stock's daily historical information.
 
-    Returns a pandas.DataFrame with Adj Close, Close, High, Low, Open and
+    Returns a dictionary with Adj Close, Close, High, Low, Open and
     Volume, between the start_date and the end_date. Is start_date and
     end_date were not provided all the available information will be
     retrieved. Information provided by YQL platform.
@@ -122,8 +121,8 @@ def request_historical(ticker, start_date, end_date):
     :type start_date: string on the format of "yyyy-mm-dd"
     :param end_date: End date
     :type end_date: string on the format of "yyyy-mm-dd"
-    :returns: DataFrame with daily historical information.
-    :rtype: pandas.DataFrame
+    :returns: Daily historical information.
+    :rtype: dictionary
     """
     __validate_dates(start_date, end_date)
 
@@ -141,11 +140,7 @@ def request_historical(ticker, start_date, end_date):
     if not response:
         raise RequestError('Unable to process the request. Check if the ' +
                            'stock ticker used is a valid one.')
-    out_df = pd.DataFrame(response)
-    out_df.set_index('Date', inplace=True)
-    out_df.index.name = None
-
-    return out_df
+    return response
 
 
 def download_historical(tickers_list, output_folder):

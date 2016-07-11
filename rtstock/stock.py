@@ -187,7 +187,7 @@ class Stock(object):
     def get_historical(self, start_date, end_date):
         """Get stock's daily historical information.
 
-        Returns a pandas.DataFrame with Adj Close, Close, High, Low, Open and
+        Returns a dictionary with Adj Close, Close, High, Low, Open and
         Volume, between the start_date and the end_date. Is start_date and
         end_date were not provided all the available information will be
         retrieved. Information provided by YQL platform.
@@ -200,8 +200,8 @@ class Stock(object):
         :type start_date: string on the format of "yyyy-mm-dd"
         :param end_date: End date.
         :type end_date: string on the format of "yyyy-mm-dd"
-        :returns: DataFrame with daily historical information.
-        :rtype: pandas.DataFrame
+        :returns: Daily historical information.
+        :rtype: dictionary
         """
         return request_historical(self.__ticker, start_date, end_date)
 
