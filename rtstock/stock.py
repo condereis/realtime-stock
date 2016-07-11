@@ -97,21 +97,59 @@ class Stock(object):
         stocks. That being said, the following fields will be retrieved by
         this method as a python dictionary from YQL platform:
 
-        Ask, AverageDailyVolume, Bid, BookValue, Change, Change_PercentChange,
-        ChangeFromFiftydayMovingAverage, ChangeFromTwoHundreddayMovingAverage,
-        ChangeFromYearHigh, ChangeFromYearLow, ChangeinPercent, Currency,
-        DaysHigh, DaysLow, DaysRange, DividendPayDate, DividendShare,
-        DividendYield, EarningsShare, EBITDA, EPSEstimateCurrentYear,
-        EPSEstimateNextQuarter, EPSEstimateNextYear, ExDividendDate,
-        FiftydayMovingAverage, LastTradeDate, LastTradePriceOnly,
-        LastTradeTime, LastTradeWithTime, MarketCapitalization, Name,
-        OneyrTargetPrice, Open, PEGRatio, PERatio, PercebtChangeFromYearHigh,
-        PercentChange, PercentChangeFromFiftydayMovingAverage,
-        PercentChangeFromTwoHundreddayMovingAverage, PercentChangeFromYearLow,
-        PreviousClose, PriceBook, PriceEPSEstimateCurrentYear,
-        PriceEPSEstimateNextYear, PriceSales, ShortRatio, StockExchange,
-        Symbol, TwoHundreddayMovingAverage, Volume, YearHigh, YearLow,
-        YearRange.
+        - Ask
+        - AverageDailyVolume
+        - Bid
+        - BookValue
+        - Change
+        - Change_PercentChange
+        - ChangeFromFiftydayMovingAverage
+        - ChangeFromTwoHundreddayMovingAverage
+        - ChangeFromYearHigh
+        - ChangeFromYearLow
+        - ChangeinPercent
+        - Currency
+        - DaysHigh
+        - DaysLow
+        - DaysRange
+        - DividendPayDate
+        - DividendShare
+        - DividendYield
+        - EarningsShare
+        - EBITDA
+        - EPSEstimateCurrentYear
+        - EPSEstimateNextQuarter
+        - EPSEstimateNextYear
+        - ExDividendDate
+        - FiftydayMovingAverage
+        - LastTradeDate
+        - LastTradePriceOnly
+        - LastTradeTime
+        - LastTradeWithTime
+        - MarketCapitalization
+        - Name
+        - OneyrTargetPrice
+        - Open
+        - PEGRatio
+        - PERatio
+        - PercebtChangeFromYearHigh
+        - PercentChange
+        - PercentChangeFromFiftydayMovingAverage
+        - PercentChangeFromTwoHundreddayMovingAverage
+        - PercentChangeFromYearLow
+        - PreviousClose
+        - PriceBook
+        - PriceEPSEstimateCurrentYear
+        - PriceEPSEstimateNextYear
+        - PriceSales
+        - ShortRatio
+        - StockExchange
+        - Symbol
+        - TwoHundreddayMovingAverage
+        - Volume
+        - YearHigh
+        - YearLow
+        - YearRange
 
         Check `here <http://goo.gl/8AROUD>`_ for more information on YQL.
 
@@ -155,8 +193,8 @@ class Stock(object):
         retrieved. Information provided by YQL platform.
         Check `here <http://goo.gl/8AROUD>`_ for more information on YQL.
 
-        :note: Request limited to 364 data-points. Use download_historical()
-        to download the full historical data.
+        .. warning:: Request limited to a period not greater than 366 days.
+        Use download_historical() to download the full historical data.
 
         :param start_date: Start date.
         :type start_date: string on the format of "yyyy-mm-dd"

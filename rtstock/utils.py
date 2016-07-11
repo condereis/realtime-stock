@@ -101,12 +101,12 @@ def request_historical(ticker, start_date, end_date):
     Returns a pandas.DataFrame with Adj Close, Close, High, Low, Open and
     Volume, between the start_date and the end_date. Is start_date and
     end_date were not provided all the available information will be
-    retrieved.
+    retrieved. Information provided by YQL platform.
+    Check `here <http://goo.gl/8AROUD>`_ for more information on YQL.
 
-    :note: Request limited to a period not greater than 366 days.
-    Use download_historical() to download the full historical data.
+    .. warning:: Request limited to a period not greater than 366 days.
+        Use download_historical() to download the full historical data.
 
-    `Check <http://goo.gl/8AROUD>`_ for more information on YQL requests.
 
     >>> request_historical('AAPL', '2016-03-01', '2016-03-03')
                  Adj_Close       Close        High         Low        Open
