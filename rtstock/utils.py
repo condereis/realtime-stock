@@ -6,15 +6,44 @@ from Yahoo Finance.
 """
 
 from __future__ import unicode_literals
+import datetime
 import json
 import pandas as pd
+import os
 
 try:
     # Python 3
-    from urllib.request import urlopen, quote
+    from urllib.request import urlopen, quote, urlretrieve
 except ImportError:
     # Python 2
-    from urllib2 import urlopen, quote
+    from urllib2 import urlopen, quote, urlretrieve
+
+from .exceptions import RequestError
+
+
+def __validate_list(list_to_validate):
+    """Validate list."""
+    if not type(list_to_validate) is list:
+        raise TypeError(
+            "List expected, " +
+            type(list_to_validate).__name__ + " found."
+        )
+
+
+def __validate_dates(start_date, end_date):
+    """Validate if a date string.
+
+    Validate if a string is a date on yyyy-mm-dd format and it the
+    period between them is less than a year.
+    """
+    try:
+        start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+        end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+    except ValueError:
+        raise ValueError("Incorrect data format, should be yyyy-mm-dd")
+    if end_date - start_date > 366:
+        raise ValueError("The difference between start and end date " +
+                         "should be less than or equal to 366 days.")
 
 
 def __yahoo_request(query):
@@ -55,11 +84,8 @@ def request_quotes(tickers_list, selected_columns=['*']):
     :rtype: json
     :raises: TypeError, TypeError
     """
-    if not type(selected_columns) is list:
-        raise TypeError(
-            "request_quotes() expected list, " +
-            type(selected_columns).__name__ + " found."
-        )
+    __validate_list(tickers_list)
+    __validate_list(selected_columns)
     query = 'select {cols} from yahoo.finance.quotes where symbol in ({vals})'
     query = query.format(
         cols=', '.join(selected_columns),
@@ -76,6 +102,9 @@ def request_historical(ticker, start_date, end_date):
     Volume, between the start_date and the end_date. Is start_date and
     end_date were not provided all the available information will be
     retrieved.
+
+    :note: Request limited to a period not greater than 366 days.
+    Use download_historical() to download the full historical data.
 
     `Check <http://goo.gl/8AROUD>`_ for more information on YQL requests.
 
@@ -96,6 +125,8 @@ def request_historical(ticker, start_date, end_date):
     :returns: DataFrame with daily historical information.
     :rtype: pandas.DataFrame
     """
+    __validate_dates(start_date, end_date)
+
     cols = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Adj_Close']
     query = 'select {cols} from yahoo.finance.historicaldata ' + \
         'where symbol in ("{ticker}") and startDate = "{start_date}" ' + \
@@ -106,9 +137,38 @@ def request_historical(ticker, start_date, end_date):
         start_date=start_date,
         end_date=end_date
     )
-    response = __yahoo_request(query)['quote']
+    response = __yahoo_request(query)
+    if not response:
+        raise RequestError('Unable to process the request. Check if the ' +
+                           'stock ticker used is a valid one.')
     out_df = pd.DataFrame(response)
     out_df.set_index('Date', inplace=True)
     out_df.index.name = None
 
     return out_df
+
+
+def download_historical(tickers_list, output_folder):
+    """Download historical data from Yahoo Finance.
+
+    Downloads full historical data from Yahoo Finance as CSV. The following
+    fields are available: Adj Close, Close, High, Low, Open and Volume. Files
+    will be saved to output_folder as <ticker>.csv.
+
+    :param tickers_list: List of tickers that will be returned.
+    :type tickers_list: list of strings
+    :param output_folder: Output folder path
+    :type output_folder: string
+    """
+    __validate_list(tickers_list)
+    for ticker in tickers_list:
+        file_name = os.path.join(output_folder, ticker + '.csv')
+        with open(file_name, 'wb') as f:
+            base_url = 'http://real-chart.finance.yahoo.com/table.csv?s='
+            try:
+                urlretrieve(base_url + ticker, f.name)
+            except:
+                os.remove(file_name)
+                raise RequestError('Unable to process the request. ' +
+                                   'Check if the stock ticker used is a ' +
+                                   'valid one.')

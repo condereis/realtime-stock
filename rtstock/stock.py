@@ -7,7 +7,8 @@ quotes information as well as historical data.
 """
 
 from __future__ import unicode_literals
-from .utils import request_quotes, request_historical
+from .utils import request_quotes, request_historical, download_historical
+from .exceptions import UnavailableStockError
 
 
 class Stock(object):
@@ -59,6 +60,18 @@ class Stock(object):
         """
         return self.__ticker
 
+    def set_ticker(self, ticker):
+        """Set stock's ticker.
+
+        >>> stock.set_ticker('YHOO')
+        >>> print(stock)
+        <Stock YHOO>
+
+        :param ticker: Stock ticker in Yahoo Finances format.
+        :type ticker: string
+        """
+        self.ticker = ticker
+
     def get_latest_price(self):
         """Get stock's latest price.
 
@@ -82,42 +95,86 @@ class Stock(object):
 
         There is no guarantee that all the fields will be available for all
         stocks. That being said, the following fields will be retrieved by
-        this method as a python dictionary:
-        [...]
+        this method as a python dictionary from YQL platform:
+
+        Ask, AverageDailyVolume, Bid, BookValue, Change, Change_PercentChange,
+        ChangeFromFiftydayMovingAverage, ChangeFromTwoHundreddayMovingAverage,
+        ChangeFromYearHigh, ChangeFromYearLow, ChangeinPercent, Currency,
+        DaysHigh, DaysLow, DaysRange, DividendPayDate, DividendShare,
+        DividendYield, EarningsShare, EBITDA, EPSEstimateCurrentYear,
+        EPSEstimateNextQuarter, EPSEstimateNextYear, ExDividendDate,
+        FiftydayMovingAverage, LastTradeDate, LastTradePriceOnly,
+        LastTradeTime, LastTradeWithTime, MarketCapitalization, Name,
+        OneyrTargetPrice, Open, PEGRatio, PERatio, PercebtChangeFromYearHigh,
+        PercentChange, PercentChangeFromFiftydayMovingAverage,
+        PercentChangeFromTwoHundreddayMovingAverage, PercentChangeFromYearLow,
+        PreviousClose, PriceBook, PriceEPSEstimateCurrentYear,
+        PriceEPSEstimateNextYear, PriceSales, ShortRatio, StockExchange,
+        Symbol, TwoHundreddayMovingAverage, Volume, YearHigh, YearLow,
+        YearRange.
+
+        Check `here <http://goo.gl/8AROUD>`_ for more information on YQL.
 
         :returns: Dictionary with all the available information.
         :rtype: dictionary
         """
-        return request_quotes([self.__ticker])
+        columns = ['Ask', 'AverageDailyVolume', 'Bid', 'BookValue', 'Change',
+                   'Change_PercentChange', 'ChangeFromFiftydayMovingAverage',
+                   'ChangeFromTwoHundreddayMovingAverage',
+                   'ChangeFromYearHigh', 'ChangeFromYearLow',
+                   'ChangeinPercent', 'Currency', 'DaysHigh', 'DaysLow',
+                   'DaysRange', 'DividendPayDate', 'DividendShare',
+                   'DividendYield', 'EarningsShare', 'EBITDA',
+                   'EPSEstimateCurrentYear', 'EPSEstimateNextQuarter',
+                   'EPSEstimateNextYear', 'ExDividendDate',
+                   'FiftydayMovingAverage', 'LastTradeDate',
+                   'LastTradePriceOnly', 'LastTradeTime', 'LastTradeWithTime',
+                   'MarketCapitalization', 'Name', 'OneyrTargetPrice', 'Open',
+                   'PEGRatio', 'PERatio', 'PercebtChangeFromYearHigh',
+                   'PercentChange', 'PercentChangeFromFiftydayMovingAverage',
+                   'PercentChangeFromTwoHundreddayMovingAverage',
+                   'PercentChangeFromYearLow', 'PreviousClose', 'PriceBook',
+                   'PriceEPSEstimateCurrentYear', 'PriceEPSEstimateNextYear',
+                   'PriceSales', 'ShortRatio', 'StockExchange', 'Symbol',
+                   'TwoHundreddayMovingAverage', 'Volume', 'YearHigh',
+                   'YearLow', 'YearRange']
 
-    def get_historical(self, start_date=None, end_date=None):
+        response = request_quotes([self.__ticker], columns)
+        if not response['Name']:
+            raise UnavailableStockError(
+                self.__ticker + ' does returns no results from Yahoo Finance.'
+            )
+        return response
+
+    def get_historical(self, start_date, end_date):
         """Get stock's daily historical information.
 
         Returns a pandas.DataFrame with Adj Close, Close, High, Low, Open and
         Volume, between the start_date and the end_date. Is start_date and
         end_date were not provided all the available information will be
-        retrieved.
+        retrieved. Information provided by YQL platform.
+        Check `here <http://goo.gl/8AROUD>`_ for more information on YQL.
 
-        :param start_date: Start date, defaults to None
-	    :type start_date: string on the format of "yyyy-mm-dd"
-	    :param end_date: End date, defaults to None
-	    :type end_date: string on the format of "yyyy-mm-dd"
-	    :returns: DataFrame with daily historical information.
-	    :rtype: pandas.DataFrame
+        :note: Request limited to 364 data-points. Use download_historical()
+        to download the full historical data.
+
+        :param start_date: Start date.
+        :type start_date: string on the format of "yyyy-mm-dd"
+        :param end_date: End date.
+        :type end_date: string on the format of "yyyy-mm-dd"
+        :returns: DataFrame with daily historical information.
+        :rtype: pandas.DataFrame
         """
-        if not start_date:
-            start_date = self.__start_date
-        if not end_date:
-            end_date = self.__end_date
-
-        cols = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Adj_Close']
-        query = 'select {cols} from yahoo.finance.historicaldata ' + \
-            'where symbol in ("{ticker}") and startDate = "{start_date}" ' + \
-            'and endDate = "{end_date}"'
-        query = query.format(
-            cols=', '.join(cols),
-            ticker=self.__ticker,
-            start_date=start_date,
-            end_date=end_date
-        )
         return request_historical(self.__ticker, start_date, end_date)
+
+    def save_historical(self, output_folder):
+        """Download historical data from Yahoo Finance.
+
+        Downloads full historical data from Yahoo Finance as CSV. The following
+        fields are available: Adj Close, Close, High, Low, Open and Volume.
+        Files will be saved to output_folder as <ticker>.csv.
+
+        :param output_folder: Output folder path
+        :type output_folder: string
+        """
+        download_historical([self.__ticker], output_folder)
