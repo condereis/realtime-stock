@@ -15,7 +15,8 @@ try:
     from urllib.request import urlopen, quote, urlretrieve
 except ImportError:
     # Python 2
-    from urllib2 import urlopen, quote, urlretrieve
+    from urllib2 import urlopen, quote
+    from urllib import urlretrieve
 
 from .exceptions import RequestError
 

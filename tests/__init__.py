@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Python 2
-try:
+import sys
+if sys.version_info < (3,0):
+	# Python 2
 	import test_stock
-
-# Python 3
-except:
-	pass

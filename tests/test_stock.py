@@ -15,7 +15,6 @@ import unittest
 from rtstock.stock import Stock
 
 
-
 class TestStock(unittest.TestCase):
 
     def setUp(self):
