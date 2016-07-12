@@ -41,9 +41,11 @@ def __validate_dates(start_date, end_date):
         end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
     except ValueError:
         raise ValueError("Incorrect data format, should be yyyy-mm-dd")
-    if end_date - start_date > 366:
+    if (end_date - start_date).days > 366:
         raise ValueError("The difference between start and end date " +
                          "should be less than or equal to 366 days.")
+    if (end_date - start_date).days < 0:
+        raise ValueError("End date cannot be before start date.")
 
 
 def __yahoo_request(query):
@@ -92,7 +94,15 @@ def request_quotes(tickers_list, selected_columns=['*']):
         vals=', '.join('"{0}"'.format(s) for s in tickers_list)
     )
 
-    return __yahoo_request(query)['quote']
+    response = __yahoo_request(query)
+
+    if not response:
+        raise RequestError('Unable to process the request. Check if the ' +
+                           'columns selected are valid.')
+
+    if not type(response['quote']) is list:
+        return [response['quote']]
+    return response['quote']
 
 
 def request_historical(ticker, start_date, end_date):
@@ -108,22 +118,34 @@ def request_historical(ticker, start_date, end_date):
         Use download_historical() to download the full historical data.
 
 
-    >>> request_historical('AAPL', '2016-03-01', '2016-03-03')
-                 Adj_Close       Close        High         Low        Open
-    2016-03-03  100.885763      101.50  101.709999  100.449997  100.580002
-    2016-03-02  100.140301      100.75  100.889999   99.639999  100.510002
-    2016-03-01   99.921631  100.529999  100.769997   97.419998   97.650002
-                  Volume
-    2016-03-03  36955700
-    2016-03-02  33169600
-    2016-03-01  50407100
+    >>> request_historical('AAPL', '2016-03-01', '2016-03-02')
+    [
+        {
+            'Close': '100.75',
+            'Low': '99.639999',
+            'High': '100.889999',
+            'Adj_Close': '100.140301',
+            'Date': '2016-03-02',
+            'Open': '100.510002',
+            'Volume': '33169600'
+        },
+        {
+            'Close': '100.529999',
+            'Low': '97.419998',
+            'High': '100.769997',
+            'Adj_Close': '99.921631',
+            'Date': '2016-03-01',
+            'Open': '97.650002',
+            'Volume': '50407100'
+        }
+    ]
 
     :param start_date: Start date
     :type start_date: string on the format of "yyyy-mm-dd"
     :param end_date: End date
     :type end_date: string on the format of "yyyy-mm-dd"
     :returns: Daily historical information.
-    :rtype: dictionary
+    :rtype: list of dictionaries
     """
     __validate_dates(start_date, end_date)
 
@@ -141,7 +163,10 @@ def request_historical(ticker, start_date, end_date):
     if not response:
         raise RequestError('Unable to process the request. Check if the ' +
                            'stock ticker used is a valid one.')
-    return response
+
+    if not type(response['quote']) is list:
+        return [response['quote']]
+    return response['quote']
 
 
 def download_historical(tickers_list, output_folder):
@@ -165,6 +190,5 @@ def download_historical(tickers_list, output_folder):
                 urlretrieve(base_url + ticker, f.name)
             except:
                 os.remove(file_name)
-                raise RequestError('Unable to process the request. ' +
-                                   'Check if the stock ticker used is a ' +
-                                   'valid one.')
+                raise RequestError('Unable to process the request. Check if ' +
+                                   ticker + ' is a valid stock ticker')

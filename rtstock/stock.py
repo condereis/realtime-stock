@@ -2,13 +2,13 @@
 Stock module.
 
 This module contains all the classes used to retrieve information
-about a single stock from Yahoo Finances. That includes, realtime
+about a single stock from Yahoo Finances. That includes, real-time
 quotes information as well as historical data.
 """
 
 from __future__ import unicode_literals
 from .utils import request_quotes, request_historical, download_historical
-from .exceptions import UnavailableStockError
+from .exceptions import RequestError
 
 
 class Stock(object):
@@ -179,8 +179,8 @@ class Stock(object):
 
         response = request_quotes([self.__ticker], columns)
         if not response['Name']:
-            raise UnavailableStockError(
-                self.__ticker + ' does returns no results from Yahoo Finance.'
+            raise RequestError(
+                self.__ticker + ' returns no results from Yahoo Finance.'
             )
         return response
 
@@ -194,14 +194,37 @@ class Stock(object):
         Check `here <http://goo.gl/8AROUD>`_ for more information on YQL.
 
         .. warning:: Request limited to a period not greater than 366 days.
-        Use download_historical() to download the full historical data.
+            Use download_historical() to download the full historical data.
 
-        :param start_date: Start date.
+
+        >>> stock.get_historical('2016-03-01', '2016-03-02')
+        [
+            {
+                'Close': '100.75',
+                'Low': '99.639999',
+                'High': '100.889999',
+                'Adj_Close': '100.140301',
+                'Date': '2016-03-02',
+                'Open': '100.510002',
+                'Volume': '33169600'
+            },
+            {
+                'Close': '100.529999',
+                'Low': '97.419998',
+                'High': '100.769997',
+                'Adj_Close': '99.921631',
+                'Date': '2016-03-01',
+                'Open': '97.650002',
+                'Volume': '50407100'
+            }
+        ]
+
+        :param start_date: Start date
         :type start_date: string on the format of "yyyy-mm-dd"
-        :param end_date: End date.
+        :param end_date: End date
         :type end_date: string on the format of "yyyy-mm-dd"
         :returns: Daily historical information.
-        :rtype: dictionary
+        :rtype: list of dictionaries
         """
         return request_historical(self.__ticker, start_date, end_date)
 
