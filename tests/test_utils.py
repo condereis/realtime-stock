@@ -8,6 +8,7 @@ test_utils
 Tests for `utils` module.
 """
 
+import os
 import sys
 import unittest
 
@@ -101,6 +102,23 @@ class TestRequestHistorical(unittest.TestCase):
                                      self.end_date, self.start_date)
 
 
+class TestDownloadHistorical(unittest.TestCase):
+    """Tests for download_historical function."""
+
+    def setUp(self):
+        """SetUp."""
+        self.tickers_list = ['AAPL', 'YHOO']
+        os.makedirs('test_files')
+        self.output_folder = 'test_files'
+
+    def test_success(self):
+        utils.download_historical(self.tickers_list, self.output_folder)
+
+    def tearDown(self):
+        for ticker in self.tickers_list:
+            file_name = os.path.join(self.output_folder, ticker + '.csv')
+            os.remove(file_name)
+        os.rmdir(self.output_folder)
 
 if __name__ == '__main__':
     sys.exit(unittest.main())
