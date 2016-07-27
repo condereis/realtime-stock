@@ -9,4 +9,4 @@ History
 * Stock class implemented.
 * Function to request recent quotes about a list of tickers.
 * Function to get stock's daily historical information.
-* Function to download historical data from Yahoo Finance.
+* Function to download historical data about a list of tickers..
