@@ -12,7 +12,7 @@ import os
 import sys
 import unittest
 
-from rtstock.exceptions import RequestError
+import rtstock.error as exceptions
 import rtstock.utils as utils
 
 
@@ -42,7 +42,7 @@ class TestRequestQuotes(unittest.TestCase):
         self.assertEqual(len(response[0].keys()), 1)
         # Only invalid fields
         fields = ['invalid_field_1', 'invalid_field_2']
-        with self.assertRaises(RequestError):
+        with self.assertRaises(exceptions.RequestError):
             response = utils.request_quotes(self.tickers_list, fields)
 
     def test_fake_company(self):
@@ -121,8 +121,9 @@ class TestDownloadHistorical(unittest.TestCase):
 
     def test_invalid_company(self):
         """Test download_historical with invalid company."""
-        with self.assertRaises(RequestError):
-            utils.download_historical(['invalid_company'], self.output_folder)
+        with self.assertRaises(exceptions.RequestError):
+            utils.download_historical(['fake_company'], self.output_folder)
+
 
     def tearDown(self):
         """Cleaning up."""

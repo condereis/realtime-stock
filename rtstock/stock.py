@@ -8,7 +8,7 @@ quotes information as well as historical data.
 
 from __future__ import unicode_literals
 from .utils import request_quotes, request_historical, download_historical
-from .exceptions import RequestError
+from .error import RequestError
 
 
 class Stock(object):
@@ -17,7 +17,8 @@ class Stock(object):
     Provides methods to retrieve real-time quotes and historical
     data from Yahoo Finance database.
 
-    >>> from rtstock.core import Stock
+    >>> from rtstock.stock
+-  import Stock
     >>>
     >>> stock = Stock('AAPL')
     >>> print(stock)

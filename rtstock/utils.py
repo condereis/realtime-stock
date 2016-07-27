@@ -18,7 +18,7 @@ except ImportError:
     from urllib2 import urlopen, quote
     from urllib import urlretrieve
 
-from .exceptions import RequestError
+from .error import RequestError
 
 
 def __validate_list(list_to_validate):
@@ -159,6 +159,7 @@ def request_historical(ticker, start_date, end_date):
         start_date=start_date,
         end_date=end_date
     )
+
     response = __yahoo_request(query)
     if not response:
         raise RequestError('Unable to process the request. Check if the ' +
@@ -187,6 +188,7 @@ def download_historical(tickers_list, output_folder):
         with open(file_name, 'wb') as f:
             base_url = 'http://real-chart.finance.yahoo.com/table.csv?s='
             try:
+                urlopen(base_url + ticker)
                 urlretrieve(base_url + ticker, f.name)
             except:
                 os.remove(file_name)
