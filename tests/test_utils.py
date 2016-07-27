@@ -112,12 +112,25 @@ class TestDownloadHistorical(unittest.TestCase):
         self.output_folder = 'test_files'
 
     def test_success(self):
+        """Test download_historical success."""
+        first_line = b'Date,Open,High,Low,Close,Volume,Adj Close\n'
         utils.download_historical(self.tickers_list, self.output_folder)
+        with open(os.path.join(self.output_folder,
+                               self.tickers_list[0] + '.csv'), 'rb') as f:
+            self.assertEqual(f.readline(), first_line)
+
+    def test_invalid_company(self):
+        """Test download_historical with invalid company."""
+        with self.assertRaises(RequestError):
+            utils.download_historical(['invalid_company'], self.output_folder)
 
     def tearDown(self):
-        for ticker in self.tickers_list:
-            file_name = os.path.join(self.output_folder, ticker + '.csv')
-            os.remove(file_name)
+        """Cleaning up."""
+        for root, dirs, files in os.walk(self.output_folder, topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
         os.rmdir(self.output_folder)
 
 if __name__ == '__main__':
