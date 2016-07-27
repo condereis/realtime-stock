@@ -29,12 +29,14 @@ Features
 --------
 
 **Stock class**
+
 * Method to get stock's latest price.
 * Method to get all stock's information provided by Yahoo Finance.
 * Method get stock's daily historical information.
 * Method download historical data from Yahoo Finance.
 
 **Utility functions**
+
 * Function to request recent quotes about a list of tickers.
 * Function to get stock's daily historical information.
 * Function to download historical data from Yahoo Finance.
