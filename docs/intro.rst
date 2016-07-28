@@ -28,7 +28,18 @@ Realtime Stock is a Python package to gather realtime stock quotes from Yahoo Fi
 Features
 --------
 
-* TODO
+**Stock class**
+
+* Method to get stock's latest price.
+* Method to get all stock's information provided by Yahoo Finance.
+* Method get stock's daily historical information.
+* Method download stock's historical data from Yahoo Finance.
+
+**Utility functions**
+
+* Function to request recent quotes about a list of tickers.
+* Function to get stock's daily historical information.
+* Function to download historical data about a list of tickers.
 
 
 Credits
