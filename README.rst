@@ -68,6 +68,7 @@ For single stocks:
 	    'LastTradeTime': '4:00pm'
 	}
 
+Check `here <https://realtime-stock.readthedocs.io/en/latest/usage.html>`_  for further information on usage.
 
 Credits
 ---------
