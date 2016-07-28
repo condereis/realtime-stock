@@ -71,7 +71,7 @@ class Stock(object):
         :param ticker: Stock ticker in Yahoo Finances format.
         :type ticker: string
         """
-        self.ticker = ticker
+        self.__ticker = ticker
 
     def get_latest_price(self):
         """Get stock's latest price.
@@ -157,32 +157,32 @@ class Stock(object):
         :returns: Dictionary with all the available information.
         :rtype: dictionary
         """
-        columns = ['Ask', 'AverageDailyVolume', 'Bid', 'BookValue', 'Change',
-                   'Change_PercentChange', 'ChangeFromFiftydayMovingAverage',
-                   'ChangeFromTwoHundreddayMovingAverage',
-                   'ChangeFromYearHigh', 'ChangeFromYearLow',
-                   'ChangeinPercent', 'Currency', 'DaysHigh', 'DaysLow',
-                   'DaysRange', 'DividendPayDate', 'DividendShare',
-                   'DividendYield', 'EarningsShare', 'EBITDA',
-                   'EPSEstimateCurrentYear', 'EPSEstimateNextQuarter',
-                   'EPSEstimateNextYear', 'ExDividendDate',
-                   'FiftydayMovingAverage', 'LastTradeDate',
-                   'LastTradePriceOnly', 'LastTradeTime', 'LastTradeWithTime',
-                   'MarketCapitalization', 'Name', 'OneyrTargetPrice', 'Open',
-                   'PEGRatio', 'PERatio', 'PercebtChangeFromYearHigh',
-                   'PercentChange', 'PercentChangeFromFiftydayMovingAverage',
-                   'PercentChangeFromTwoHundreddayMovingAverage',
-                   'PercentChangeFromYearLow', 'PreviousClose', 'PriceBook',
-                   'PriceEPSEstimateCurrentYear', 'PriceEPSEstimateNextYear',
-                   'PriceSales', 'ShortRatio', 'StockExchange', 'Symbol',
-                   'TwoHundreddayMovingAverage', 'Volume', 'YearHigh',
-                   'YearLow', 'YearRange']
+        keys = ['Ask', 'AverageDailyVolume', 'Bid', 'BookValue', 'Change',
+                'Change_PercentChange', 'ChangeFromFiftydayMovingAverage',
+                'ChangeFromTwoHundreddayMovingAverage',
+                'ChangeFromYearHigh', 'ChangeFromYearLow',
+                'ChangeinPercent', 'Currency', 'DaysHigh', 'DaysLow',
+                'DaysRange', 'DividendPayDate', 'DividendShare',
+                'DividendYield', 'EarningsShare', 'EBITDA',
+                'EPSEstimateCurrentYear', 'EPSEstimateNextQuarter',
+                'EPSEstimateNextYear', 'ExDividendDate',
+                'FiftydayMovingAverage', 'LastTradeDate',
+                'LastTradePriceOnly', 'LastTradeTime', 'LastTradeWithTime',
+                'MarketCapitalization', 'Name', 'OneyrTargetPrice', 'Open',
+                'PEGRatio', 'PERatio', 'PercebtChangeFromYearHigh',
+                'PercentChange', 'PercentChangeFromFiftydayMovingAverage',
+                'PercentChangeFromTwoHundreddayMovingAverage',
+                'PercentChangeFromYearLow', 'PreviousClose', 'PriceBook',
+                'PriceEPSEstimateCurrentYear', 'PriceEPSEstimateNextYear',
+                'PriceSales', 'ShortRatio', 'StockExchange', 'Symbol',
+                'TwoHundreddayMovingAverage', 'Volume', 'YearHigh',
+                'YearLow', 'YearRange']
 
-        response = request_quotes([self.__ticker], columns)
-        if not response['Name']:
-            raise RequestError(
-                self.__ticker + ' returns no results from Yahoo Finance.'
-            )
+        response = request_quotes([self.__ticker], keys)
+        # if not response['Name']:
+        #     raise RequestError(
+        #         self.__ticker + ' returns no results from Yahoo Finance.'
+        #     )
         return response
 
     def get_historical(self, start_date, end_date):

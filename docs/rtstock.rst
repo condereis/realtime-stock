@@ -4,10 +4,10 @@ rtstock package
 Submodules
 ----------
 
-rtstock.exceptions module
--------------------------
+rtstock.error module
+--------------------
 
-.. automodule:: rtstock.exceptions
+.. automodule:: rtstock.error
     :members:
     :undoc-members:
     :show-inheritance:

@@ -194,3 +194,4 @@ def download_historical(tickers_list, output_folder):
                 os.remove(file_name)
                 raise RequestError('Unable to process the request. Check if ' +
                                    ticker + ' is a valid stock ticker')
+
