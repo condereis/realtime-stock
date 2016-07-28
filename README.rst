@@ -13,7 +13,7 @@ Realtime Stock
         :target: https://realtime-stock.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://badge.fury.io/py/realtime-stock.svg
+.. image:: https://pyup.io/repos/github/condereis/realtime-stock/shield.svg
      :target: https://pyup.io/repos/github/condereis/realtime-stock/
      :alt: Updates
 
