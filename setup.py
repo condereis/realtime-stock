@@ -19,7 +19,7 @@ test_requirements = [
 
 setup(
     name='realtime-stock',
-    version='0.1.0',
+    version='1.0.0',
     description="A python package to gather realtime stock quotes from " +
                 "Yahoo Finance. The package enables you to handle single " +
                 "stocks or portfolios, optimizing the nunber of requests " +
