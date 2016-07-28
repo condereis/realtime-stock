@@ -3,7 +3,7 @@ Realtime Stock
 ===============================
 
 
-.. image:: https://img.shields.io/pypi/v/realtime-stock.svg
+.. image:: https://badge.fury.io/py/realtime-stock.svg
         :target: https://pypi.python.org/pypi/realtime-stock
 
 .. image:: https://img.shields.io/travis/condereis/realtime-stock.svg
