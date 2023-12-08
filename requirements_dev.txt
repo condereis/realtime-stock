@@ -1,7 +1,7 @@
 pip==10.0.1
 wheel==0.38.1
 bumpversion==0.6.0
-watchdog==0.8.3
+watchdog==3.0.0
 flake8==5.0.4
 tox==3.0.0
 coverage==4.5.4
