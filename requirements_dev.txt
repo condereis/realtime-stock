@@ -9,4 +9,4 @@ Sphinx==7.2.6
 coverage==7.3.1
 cryptography==2.2.2
 PyYAML==6.0.1
-pandas==0.23.1
+pandas==2.1.3
