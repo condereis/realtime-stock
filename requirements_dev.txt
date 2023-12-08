@@ -7,6 +7,6 @@ tox==3.0.0
 coverage==7.3.1
 Sphinx==7.2.6
 coverage==7.3.1
-cryptography==2.2.2
+cryptography==41.0.7
 PyYAML==6.0.1
 pandas==2.1.3
